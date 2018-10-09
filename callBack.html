@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script>
+			function myFunction() 
+			{
+				// URL
+				var URL = this.document.URL;
+				console.log("URL :" +URL );
+    			    			
+    			// Authorization Code and GRANT TYPE
+    			console.log("Arrived URL :" + URL);
+        		var pos = URL.search("="); 
+        		console.log(pos);
+        		var res = URL.substring(pos+1);
+        		console.log("Authorization Code: " +res);
+        		        		
+        		var GRANT_TYPE = "authorization_code";
+        		        		
+        	    var TOKEN_ENDPOINT = "https://graph.facebook.com/oauth/access_token";
+        	    console.log("Token EndPoint: " +TOKEN_ENDPOINT);
+        		document.getElementById("TKEND").innerHTML = TOKEN_ENDPOINT;
+        		
+      	      			            	            
+	            var REDIRECT_URI = "http://localhost:1234/OAuth2Facebook/callBack.html";
+	            //var REDIRECT_URI = "https://localhost:8080/facebookapp/callback";
+	            var CLIENT_ID = "555022488291658";
+	            var CLIENT_SECRET = "67d51ea3878fddcfc78f8220a21f7def";
+	            
+	            
+	            
+	            //GRANT Type
+	            var GRANT_TYPE_VAL = res;
+	            var tokenEndpoint =
+                            "grant_type=" + encodeURIComponent(GRANT_TYPE) + "&" +
+                            "redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&" +
+                            "client_id=" + encodeURIComponent(CLIENT_ID) + "&" +
+                            "code=" + encodeURIComponent(GRANT_TYPE_VAL); 
+                            document.getElementById("bodyEnd").innerHTML = tokenEndpoint;
+                            
+                var clientCredent = CLIENT_ID +":"+CLIENT_SECRET;
+                var encoded_ClientCred = "Authorization "+ ":Basic "+btoa(clientCredent);  
+                document.getElementById("Cred").innerHTML = encoded_ClientCred;           
+			}
+			
+			$.ajax({
+				url:'https://graph.facebook.com/oauth/access_token"',
+				header:{
+					'Authorization':'Basic NTU1MDIyNDg4MjkxNjU4OjY3ZDUxZWEzODc4ZmRkY2ZjNzhmODIyMGEyMWY3ZGVm',
+					'X_CSRF_TOKEN':'AQBfUTfBuR9zkQ3y_MfLqfS3ETUE0jzosSA480Q7eUMOdECpJofNgizffPMkDDs7pIkI8NnOZd7u7U4U9t_cHn5KM738YnVE49rIpD5NBsTOVCbF_XQezxn6-bVEHf8Qf6fsljjoEggIqe5NJnuoPmRizL4Jynv_9sieaApUseNQJBd5JSPfr7oYj4c0GX9F_u0jpnXqk0iexoD2oio4cmvjfRJXZEP3CD1A2lLGwoXkI-BPdFciI9q1WlZwS5grcarVukI0fwDI3BQw5JMzXL6a78TUyJHmlRTzwNVnhaNcj8qJtwvRf8xAB1_kcKstj8ly0NbPCvnj_To9JTViRSoR%23_%3D_',
+					'Content-Type':'application/json'
+				},
+				method:'POST',
+				dataType:'json',
+				data:'tokenEndpoint',
+				success:function(data)
+				{
+					console.log('Sucess'+data);
+				}
+			});
+</script>
+    </head>
+<body background="images/back2.jpg">
+	
+	
+    <script>
+        
+            $(document).ready(function () {
+                    $("#btnClick").click(sendRequest);
+                });
+            function sendRequest() 
+            {
+      
+
+	            function myFunc(callback) 
+	            {
+	                var r;
+	                
+	                if (window.XMLHttpRequest)r=new XMLHttpRequest();
+	                else r=new ActiveXObject("Microsoft.XMLHTTP");
+	                r.onreadystatechange=function()
+	                    {
+	                        if (r.readyState==4&&r.status=="200")callback(r.responseText);
+	                        
+	                    };
+	                r.open("GET","http://api.ipaddress.com/iptocountry?format=json",true);
+	                r.send(null);
+	            }
+	
+	            myFunc(function(response)
+	                {
+	                var json=JSON.parse(response);
+	                document.getElementById("usermessage").value = "My Public IP address is "+ json.ipaddress + " and I am browsing the Internet from " + json.country_name + " [" + json.country_code + "] ";
+	                }
+	                
+	            );
+			}
+            
+            
+        
+    </script>
+
+<h1>THE VALUE LISTS</h1>
+
+<p>
+	<h2>
+		You Can Copy and Paste this Value
+	</h2>
+<p onclick = "myFunction()">
+	<label><font color='Blue'>This GETS the API call of IP address and other details - From Below Button Click Event </font> </label><br>
+    <textarea id="usermessage" name="usermessage" value="" rows="4" cols="50" readonly="readonly"></textarea><br><br>
+    
+    <label><font color='Blue'>Token End Point Value</font> - Which is Passed as <font color='Purple'>URI</font><font color="Red"> of POST Request</font> </label><br>
+    <textarea id="TKEND" name="usermessage" value="" rows="4" cols="50" readonly="readonly"></textarea><br><br>
+    
+    <label><font color='Blue'>Request Body</font> - Which is Passed as <font color='Purple'>Body</font> of <font color="Red"> POST Request	</font></label><br>
+    <textarea id="bodyEnd" name="usermessage" value="" rows="5" cols="125" readonly="readonly"></textarea><br><br>
+    
+    <label><font color='Blue'>Authorization header</font> with the <font color="Red">App credentials</font></label><br>
+    <textarea id="Cred" name="usermessage" value="" rows="4" cols="125" readonly="readonly"></textarea><br><br>
+    <div>
+        <input type="button" id="btnClick" alt="Submit" width="300" height="250" value="PRESS ME">
+	</div>
+    
+</p>
+
+<?PHP
+$accessToken;
+
+$your_app_id=555022488291658;
+$your_app_secretkey=67d51ea3878fddcfc78f8220a21f7def;
+
+$graph_url = "https://graph.facebook.com/oauth/access_token?client_id=".$your_app_id."&client_secret=".$your_app_secretkey."&grant_type=fb_exchange_token&fb_exchange_token=".$accessToken;
+
+$result = file_get_contents($graph_url);
+
+parse_str($result, $output);
+
+echo $output[access_token];
+echo $output[expires];  
+?>
+
+
+
+</body>
+</html>

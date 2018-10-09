@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>OAuth 2.0 and Social Login </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+                $(document).ready(function () {
+                    $("#btnClick").click(sendRequest);
+                });
+                function sendRequest() {
+        // Define properties
+                    var AUTH_ENDPOINT = "https://www.facebook.com/dialog/oauth";
+                    var RESPONSE_TYPE = "code";
+                    var CLIENT_ID = "555022488291658";
+                    //var REDIRECT_URI = "https://localhost:8080/facebookapp/callback";
+                    var REDIRECT_URI = "http://localhost:1234/OAuth2Facebook/callBack.html";
+                    var SCOPE = "user_friends";
+        // Build authorization request endpoint
+                    var requestEndpoint = AUTH_ENDPOINT + "?" +
+                            "response_type=" + encodeURIComponent(RESPONSE_TYPE) + "&" +
+                            "client_id=" + encodeURIComponent(CLIENT_ID) + "&" +
+                            "redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&" +
+                            "scope=" + encodeURIComponent(SCOPE);
+        // Send to authorization request endpoint
+                    window.location.href = requestEndpoint;
+                    console.log(requestEndpoint);
+                    
+                }
+            </script>
+</head>
+<body background="images/backgroundImage.jpg">
+
+<h1>
+        <blockquote class="blockquote">
+                <p class="h1"><font color="white">OAuth 2. Framework using Social Login</font></p>
+        </blockquote>
+</h1>
+<div>
+        <input type="image" id="btnClick"src="images/fblogo.png" alt="Submit" width="300" height="250">
+</div>
+<h2>
+        <blockquote class="blockquote">
+                <p class="h2"><font color="white">Pressing this icon, could lead to OAuth 2, Social Login</font></p>
+                <p class="h2"><font color="white">Would retrieve facebook users friends lists from "user_friends" Scope</font></p>
+        </blockquote>
+</h2>
+</body>
+</html>
